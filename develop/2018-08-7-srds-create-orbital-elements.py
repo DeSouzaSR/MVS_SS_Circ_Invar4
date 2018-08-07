@@ -25,7 +25,7 @@ import yaml
 
 # ## Settings
 
-# In[4]:
+# In[5]:
 
 
 # Definitons
@@ -47,7 +47,7 @@ seed = parameters["seed"] # 24515445, JD for 2000-01-01 00h00, ignoring decimal 
 # - Semi-major axis: Replicating the semi-major axis throughout the simulation clones, using np.tile method.
 # - orbital elements: using $n = (b - a)\cdot \text{random + a}$, where range = [a,b)
 
-# In[3]:
+# In[9]:
 
 
 # Using seed
@@ -64,7 +64,7 @@ planets_dict = {'a'    : np.tile(semi_major_axis, n_clones),
 
 # ## Create a dataframe
 
-# In[4]:
+# In[10]:
 
 
 # Create a dataframe of orbital elements.
@@ -75,14 +75,14 @@ planets[0:10]
 
 # ## Save file
 
-# In[5]:
+# In[11]:
 
 
-planets.to_csv('results/oe.csv', index=False)
+planets.to_csv('../data/oe.csv', index=False)
 
 
-# In[6]:
+# In[14]:
 
 
-get_ipython().system('ls results/')
+os.listdir('../data')
 
