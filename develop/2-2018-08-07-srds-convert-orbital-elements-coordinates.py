@@ -9,7 +9,7 @@
 
 # ## Import modules
 
-# In[7]:
+# In[1]:
 
 
 # Plots inline
@@ -30,7 +30,7 @@ import yaml
 
 # ## Settings
 
-# In[3]:
+# In[2]:
 
 
 # Matplotlib config
@@ -39,7 +39,7 @@ font = {'size'   :  16}
 matplotlib.rc('font', **font)
 
 
-# In[4]:
+# In[3]:
 
 
 # Definitons
@@ -57,7 +57,7 @@ ialpha = parameters["ialpha"]
 
 # ## Read orbital elements
 
-# In[5]:
+# In[4]:
 
 
 # Read orbial elements. 
@@ -67,7 +67,7 @@ oe.head()
 
 # ## Call orbel module and convert coordinates
 
-# In[8]:
+# In[5]:
 
 
 # Applying orbel function and create dataframe xv with postions and velocities
@@ -83,7 +83,7 @@ xv.head()
 
 # ## Save file
 
-# In[9]:
+# In[6]:
 
 
 # Save data
@@ -94,7 +94,7 @@ xv.to_csv('../data/xv.csv', index=False)
 
 # ### Inner planets' x and y coordinates 
 
-# In[10]:
+# In[7]:
 
 
 plt.figure(figsize = (8,8))
@@ -109,7 +109,7 @@ plt.plot(xv['x'], xv['y'], '.')
 
 # ### Giant planets
 
-# In[11]:
+# In[8]:
 
 
 plt.figure(figsize = (8,8))
