@@ -1,13 +1,13 @@
 
 # coding: utf-8
 
-# # Analysis of the semi-major axis
+# # Extract data of the planets
 # 
-# Analysis of the semi-major axis of the MVS_SS_Circ_Invar Simulation.
+# The output of Swift program is a binary file. This Notebook extract the planets' data and convert it in a text file, separated each planet.
 
 # ## Import modules, configuring variables and settings paths
 
-# In[1]:
+# In[8]:
 
 
 import os
@@ -15,19 +15,31 @@ import subprocess
 import shutil
 from glob import glob
 import yaml
+import platform
 
 
-# In[2]:
+# In[21]:
 
 
 # Definitons
-path_proj = os.getcwd()
-path_ss_data = '../data/ss'
+if platform.system() == 'Darwin': 
+    # Mac
+    path_proj = '/Users/sandro/Documents/Projetos/MVS_SS_Circ_Invar4'
+    follow_path = '/Users/sandro/Programas/swift/tools'
+else:
+    # Linux
+    path_proj = '/home/sandro/Documentos/Projetos/MVS_SS_Circ_Invar4'
+    follow_path = '/home/sandro/Programas/swift/tools'
+
+os.chdir(path_proj)
+
+path_ss_data = path_proj + '/data/ss'
 prefix_simulation = 'ss-'
 # Follow program path
-follow_path = '/home/sandro/Programas/swift/tools' # Linux
+ # Linux
+ # Mac
 
-with open(path_proj + '/parameters.yaml', "r") as f:
+with open(path_proj + '/src/parameters.yaml', "r") as f:
     parameters = yaml.load(f)
     
 n_planets = parameters["n_planets"]
@@ -35,7 +47,7 @@ n_clones = parameters["n_clones"]
 n_lines = n_planets * n_clones
 
 
-# In[3]:
+# In[22]:
 
 
 # Code planets used by follow_swift program
@@ -44,7 +56,7 @@ planets = {"Mercury":-2, "Venus":-3, "Earth":-4, "Mars":-5,           "Jupiter":
 
 # ## Extrating planets
 
-# In[4]:
+# In[23]:
 
 
 os.chdir(path_ss_data)
