@@ -1,18 +1,19 @@
+# coding: utf-8
+
 # Semi-major axis
 # This program analyse the time evolution of the semi-major axis for each
 # planet. 
 
 import os
 import numpy as np
-import matplotlib
-matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
+import matplotlib
 import pandas as pd
 import platform
 
 # Matplotlib configure
 plt.style.use('ggplot')
-font = {'size'   :  12}
+font = {'size'   :  16}
 matplotlib.rc('font', **font)
 
 
@@ -50,10 +51,23 @@ def create_data_planet(planet, orbital_element, simulations):
     data_planets = pd.concat(list_df_planets, keys=planets)
     return data_planets
 
-path_ss_data = '../data/raw_data/ss'
+
+# Paths configuration
+if platform.system() == 'Darwin': 
+    # Mac
+    path_proj = '/Users/sandro/Documents/Projetos/MVS_SS_Circ_Invar4'
+    follow_path = '/Users/sandro/Programas/swift/tools'
+else:
+    # Linux
+    path_proj = '/home/sandro/Documentos/Projetos/MVS_SS_Circ_Invar4'
+    follow_path = '/home/sandro/Programas/swift/tools'
+
+
+path_ss_data = 'data/ss'
 prefix_simulation = 'ss-'
 planets = ['Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune']
 
+os.chdir(path_proj)
 os.chdir(path_ss_data)
 planet = 'Mercury' # for time reference
 orbital_element = 'a'
@@ -66,35 +80,17 @@ time = data_planet.loc['Mercury']['time']
 mercury = data_planet.loc['Mercury']
 
 # Plot Mercury's semi-major axis
-mercury.set_index('time').plot(legend=False, figsize=(10,7))
-font = {size: 12}
-plt.title("Semi-major axis for all Mercury's simulations", fontdict=font)
-plt.xlabel("Time [a]")
-plt.ylabel("Semi-major axis [au]")
+mercury.set_index('time').plot.line(legend=False, figsize=(14,10))
 plt.show()
 
 # Plot Inner's semi-major axis
 ax = plt.gca()
 for planet in  planets[0:4]:
-    data_planet.loc[planet].set_index('time').plot(ax = ax, legend=False, figsize=(10,7))
-plt.title("Semi-major axis evolution of the inner planets")
-plt.xlabel("Time [a]")
-plt.ylabel("Semi-major axis [au]")
-plt.text(8e6, 0.41, "Mercury")
-plt.text(8e6, 0.74, "Venus")
-plt.text(8e6, 1.02, "Earth")
-plt.text(8e6, 1.54, "Mars")
+    data_planet.loc[planet].set_index('time').plot(ax = ax, legend=False, figsize=(14,10))
 plt.show()
 
 # Plot giant's semi-major axis
 ax = plt.gca()
 for planet in planets[4:8]:
-    data_planet.loc[planet].set_index('time').plot(ax = ax, legend=False, figsize=(10,7))
-plt.title("Semi-major axis evolution of the giant planets")
-plt.xlabel("Time [a]")
-plt.ylabel("Semi-major axis [au]")
-plt.text(8e6, 5.22, "Jupiter")
-plt.text(8e6, 9.60, "Saturn")
-plt.text(8e6, 19.25, "Uranus")
-plt.text(8e6, 30.12, "Neptune")
+    data_planet.loc[planet].set_index('time').plot(ax = ax, legend=False, figsize=(14,10))
 plt.show()

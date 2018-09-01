@@ -1,20 +1,18 @@
-# coding: utf-8
-# # Convert orbital elements in cartesian coordinates and velocities
-# This notebook transforms cartesian positions and velocities to the \
-# invariable plane. 
-# 
-# The input is a table with the [positions and velocities](../data/xv.csv)
+#' # Convert orbital elements in cartesian coordinates and velocities
+#' This notebook transforms cartesian positions and velocities to the \
+#' invariable plane. 
+#' 
+#' The input is a table with the [positions and velocities](../data/xv.csv)
 
-# Import modules
+#' Import modules
 import os
 import numpy as np
 import pandas as pd
 import matplotlib
-matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 import yaml
 
-# Setting Matplotlib
+#' Setting Matplotlib
 plt.style.use('ggplot')
 font = {'size'   :  16}
 matplotlib.rc('font', **font)
@@ -29,10 +27,10 @@ gm = parameters["gm"]
 ialpha = parameters["ialpha"]
 m = parameters["mass"]
 
-# Read cartesian coordinates
+#' Read cartesian coordinates
 coord = pd.read_csv('../data/xv.csv', dtype=float, delimiter=',')
 
-# Variables
+#' Variables
 x  = np.array(coord.x)
 y  = np.array(coord.y)
 z  = np.array(coord.z)
@@ -40,7 +38,7 @@ vx  = np.array(coord.vx)
 vy  = np.array(coord.vy)
 vz  = np.array(coord.vz)
 
-#Computes angular momentum of the system
+#'Computes angular momentum of the system
 amx = 0.0
 amy = 0.0
 amz = 0.0
@@ -50,16 +48,16 @@ for i in range(n_planets):
     amy = amy + m[i]*z[i]*vx[i] - m[i]*x[i]*vz[i]
     amz = amz + m[i]*x[i]*vy[i] - m[i]*y[i]*vx[i]
     
-# Angular momentum module
+#' Angular momentum module
 am = np.sqrt(amx*amx + amy*amy + amz*amz)
 
-# Amgular momentum inclination
+#' Amgular momentum inclination
 aminc = np.arccos(amz/am)
 
-# Angular momentum long. node
+#' Angular momentum long. node
 amcapom = np.arctan2(amx,-amy)
 
-# Rotation to the invariable plane
+#' Rotation to the invariable plane
 for i in range(5):
     xp  =  x[i]*np.cos(amcapom)+y[i]*np.sin(amcapom)
     yp  = -x[i]*np.sin(amcapom)+y[i]*np.cos(amcapom)
@@ -78,15 +76,15 @@ for i in range(5):
     vy[i] = vyp
     vz[i] = vzp
 
-# Crate data frame
+#' Crate data frame
 {'x':x, 'y':y, 'z':z, 'vx':vx, 'vy':vy, 'vz':vz}
 coord = pd.DataFrame({'x':x, 'y':y, 'z':z, 'vx':vx, 'vy':vy, 'vz':vz},\
                     columns=['x', 'y', 'z', 'vx', 'vy', 'vz'])
 
-# Save data
-coord.to_csv("../data/xv_invar.csv", index=False)
+#' Save data
+# coord.to_csv("../data/xv_invar.csv", index=False)
 
-# Verifying distribution of positions and velocities
+#' Verifying distribution of positions and velocities
 plt.figure(figsize = (8,8))
 plt.axis('equal')
 plt.xlim(-1.62,1.62)

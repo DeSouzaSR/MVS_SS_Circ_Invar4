@@ -1,14 +1,6 @@
-
-# coding: utf-8
-
 # # Create Swift input files
 # 
 # This notebook create directory structure with Swift input files.
-
-# ## Import modules
-
-# In[1]:
-
 
 # Import modules
 import os
@@ -19,17 +11,10 @@ import yaml
 from glob import glob
 import tarfile
 
+# Define paths and parameters
+path_ss_data = '../data/raw_data/ss_in/'
 
-# ## Setting paths and configuring variables
-
-# In[2]:
-
-
-# Definitons
-path_proj = os.getcwd()
-path_ss_data = '../data/ss/'
-
-with open('parameters.yaml', "r") as f:
+with open('../parameters.yaml', "r") as f:
     parameters = yaml.load(f)
     
 n_planets = parameters["n_planets"]
@@ -39,19 +24,8 @@ gm = parameters["gm"]
 ialpha = parameters["ialpha"]
 m = parameters["mass"]
 
-
-# ## Read dataframe
-
-# In[3]:
-
-
 # Read cartesian coordinates
 coord = pd.read_csv('../data/xv_invar.csv', dtype=float, delimiter=',')
-coord.head()
-
-
-# In[4]:
-
 
 # Variables
 x  = np.array(coord.x)
@@ -61,9 +35,6 @@ vx  = np.array(coord.vx)
 vy  = np.array(coord.vy)
 vz  = np.array(coord.vz)
 
-
-# ## Configuring Sun's data
-# 
 # Configuring the Sun data.
 # 
 # - First line: 9 is the sum of the number of planets and the Sun (8 + 1).
@@ -71,25 +42,14 @@ vz  = np.array(coord.vz)
 # - Third line: Position of the Sun in a heliocentric system.
 # - Fourth line: Speed of the Sun in a heliocentric system.
 
-# In[5]:
-
-
-sun_data = """9
-39.476926421373015
-0.0 0.0 0.0
-0.0 0.0 0.0\n"""
-
-
-# ## Create files
-
-# In[6]:
-
+sun_data = "9\n39.476926421373015\n0.0 0.0 0.0\n0.0 0.0 0.0\n"
 
 if os.path.isdir(path_ss_data):
     shutil.rmtree(path_ss_data)
     os.mkdir(path_ss_data)
 else:
     os.mkdir(path_ss_data)
+
 in_files = glob('../src/*.in')
 k = -1
 for i in range(n_clones):
@@ -104,22 +64,10 @@ for i in range(n_clones):
             f.write('{0:.15e} {1:.15e} {2:.15e}\n'.format(x[k], y[k], z[k]))
             f.write('{0:.15e} {1:.15e} {2:.15e}\n'.format(vx[k], vy[k], vz[k]))
 
+print("Verifying directories")
+print(os.listdir('../data/raw_data/ss_in'))
 
-# ## Verifying results
-
-# ### directories
-
-# In[7]:
-
-
-print(os.listdir('../data/ss'))
-
-
-# ### pl.in
-
-# In[8]:
-
-
+print("Verifying pl.in")
 with open(path_ss_data + 'ss-0/pl.in') as f:
     for i in f.readlines():
         print(i)
