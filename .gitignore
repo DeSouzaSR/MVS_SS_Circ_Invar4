@@ -1,0 +1,5 @@
+# Ignoring data files
+data/
+
+# Notebook
+.ipynb_checkpoints
